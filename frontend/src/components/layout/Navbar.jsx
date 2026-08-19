@@ -48,9 +48,9 @@ export default function Navbar() {
                 RSUD KL
               </span> */}
             </div>
-            <p className="text-[11px] font-medium text-slate-500 hidden sm:block whitespace-nowrap">
+            {/* <p className="text-[11px] font-medium text-slate-500 hidden sm:block whitespace-nowrap">
               RSUD Kebayoran Lama
-            </p>
+            </p> */}
           </div>
         </Link>
 
