@@ -78,7 +78,7 @@ export default function HomePage() {
   return (
     <div className="space-y-16 pb-16">
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/80 via-white to-slate-50 pt-12 pb-20 lg:pt-20 lg:pb-28">
+      <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/80 via-white to-slate-50 pt-12 lg:pt-20 lg:pb-28">
         {/* Decorative background glows */}
         <div className="absolute top-10 left-1/2 -translate-x-1/2 h-72 w-72 sm:w-[600px] rounded-full bg-emerald-200/40 blur-3xl -z-10" />
         <div className="absolute top-40 right-10 h-56 w-56 rounded-full bg-teal-200/30 blur-2xl -z-10" />
