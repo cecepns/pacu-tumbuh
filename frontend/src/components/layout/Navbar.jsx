@@ -39,19 +39,19 @@ export default function Navbar() {
             alt="Logo RSUD Kebayoran Lama"
             className="h-16 w-auto sm:h-20 object-contain rounded-xl bg-white group-hover:scale-105 transition duration-200 shrink-0"
           />
-          {/* <div className="shrink-0">
+          <div className="shrink-0">
             <div className="flex items-center gap-2 whitespace-nowrap">
               <span className="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-800 to-teal-600 bg-clip-text text-transparent">
                 PACU TUMBUH
               </span>
-              <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 tracking-wide shrink-0">
+              {/* <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 tracking-wide shrink-0">
                 RSUD KL
-              </span>
+              </span> */}
             </div>
             <p className="text-[11px] font-medium text-slate-500 hidden sm:block whitespace-nowrap">
               RSUD Kebayoran Lama
             </p>
-          </div> */}
+          </div>
         </Link>
 
         {/* Desktop Navigation */}
