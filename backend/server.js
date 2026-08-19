@@ -134,7 +134,7 @@ app.get('/api/settings', async (req, res) => {
         rs_name: 'RSUD Kebayoran Lama',
         rs_address: 'Jl. Kebayoran Lama No. 130, Kebayoran Lama Selatan, Jakarta Selatan, DKI Jakarta 12240',
         rs_phone: '(021) 7234567',
-        rs_whatsapp: '6281234567890',
+        rs_whatsapp: '6281117032345',
         rs_poli_jam: 'Senin - Jumat: 08.00 - 15.00 WIB | Sabtu: 08.00 - 12.00 WIB',
         drive_flyer_stimulasi_0_6: 'https://drive.google.com',
         drive_flyer_stimulasi_7_12: 'https://drive.google.com',
