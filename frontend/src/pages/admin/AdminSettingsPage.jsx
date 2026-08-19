@@ -19,7 +19,7 @@ export default function AdminSettingsPage() {
     rs_name: "RSUD Kebayoran Lama",
     rs_address: "Jl. Kebayoran Lama No. 130, Kebayoran Lama Selatan, Jakarta Selatan",
     rs_phone: "(021) 7234567",
-    rs_whatsapp: "6281234567890",
+    rs_whatsapp: "6281117032345",
     drive_flyer_stimulasi_0_6: "https://drive.google.com",
     drive_flyer_stimulasi_7_12: "https://drive.google.com",
     drive_flyer_stimulasi_13_18: "https://drive.google.com",

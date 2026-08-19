@@ -154,7 +154,7 @@ export function evaluateCommunication(checkedCount, totalCount) {
 
   return {
     score,
-    status: "Perlu Konsultasi Dokter Spesialis Anak Segera (Penyimpangan)",
+    status: "Perlu Konsultasi Dokter Spesialis Anak Segera",
     statusColor: "red",
     badgeClass: "bg-rose-100 text-rose-800 border-rose-200",
     rekomendasi_stimulasi:

@@ -89,6 +89,7 @@ export default function KontakPage() {
             <p className="text-xs text-slate-600 leading-relaxed">
               Konsultasi cepat, pendaftaran antrean poli, dan tanya jawab skrining via WhatsApp resmi.
             </p>
+            <p className="font-mono text-sm font-bold text-emerald-800">+62 811-1703-2345</p>
           </div>
 
           <a

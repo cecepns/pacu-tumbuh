@@ -20,7 +20,7 @@ export const CONTACT_INFO = {
   address: "Jl. Kebayoran Lama No. 130, Kebayoran Lama Selatan, Kec. Kebayoran Lama, Kota Jakarta Selatan, DKI Jakarta 12240",
   phone: "(021) 7234567",
   emergency: "119 / (021) 7234568",
-  whatsapp: "6281234567890",
+  whatsapp: "6281117032345",
   email: "rsudkebayoranlama@jakarta.go.id",
   poli_schedule: "Senin – Jumat: 08.00 – 15.00 WIB | Sabtu: 08.00 – 12.00 WIB",
   google_maps_embed: "https://maps.google.com/maps?q=RSUD%20Kebayoran%20Lama&t=&z=15&ie=UTF8&iwloc=&output=embed",

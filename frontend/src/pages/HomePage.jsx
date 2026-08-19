@@ -145,7 +145,7 @@ export default function HomePage() {
       </section>
 
       {/* 3 STEPS SECTION */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-2 mb-12">
           <h2 className="text-xs font-extrabold uppercase tracking-widest text-emerald-600">
             Alur Pemantauan
@@ -187,7 +187,7 @@ export default function HomePage() {
             );
           })}
         </div>
-      </section>
+      </section> */}
 
       {/* 4 CORE SCREENING MODULES */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -277,7 +277,7 @@ export default function HomePage() {
 
             <div className="pt-6">
               <a
-                href="https://wa.me/6281234567890?text=Halo%20Admin%20PACU%20TUMBUH%20RSUD%20Kebayoran%20Lama,%20saya%20ingin%20konsultasi%20tumbuh%20kembang%20anak"
+                href="https://wa.me/6281117032345?text=Halo%20Admin%20PACU%20TUMBUH%20RSUD%20Kebayoran%20Lama,%20saya%20ingin%20konsultasi%20tumbuh%20kembang%20anak"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white py-3 text-xs font-bold text-emerald-900 shadow-md hover:bg-emerald-50 transition"

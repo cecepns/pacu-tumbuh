@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
+  Printer,
 } from "lucide-react";
 import { screeningService } from "@/services/screeningService";
 import Pagination from "@/components/admin/Pagination";
@@ -345,10 +346,18 @@ export default function AdminScreeningPage() {
               </div>
             )}
 
-            <div className="flex justify-end pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition"
+              >
+                <Printer className="h-4 w-4 text-slate-500" />
+                <span>Cetak Rekam Skrining</span>
+              </button>
               <button
                 onClick={() => setIsDetailModalOpen(false)}
-                className="rounded-xl bg-slate-900 px-5 py-2 text-xs font-bold text-white"
+                className="rounded-xl bg-slate-900 px-5 py-2 text-xs font-bold text-white hover:bg-slate-800 transition"
               >
                 Tutup
               </button>

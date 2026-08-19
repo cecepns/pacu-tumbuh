@@ -80,11 +80,6 @@ export default function Footer() {
                   Jadwal Poli & Konsultasi
                 </Link>
               </li>
-              <li>
-                <Link to="/admin/login" className="hover:text-emerald-600 transition">
-                  Login Tenaga Kesehatan
-                </Link>
-              </li>
             </ul>
           </div>
 

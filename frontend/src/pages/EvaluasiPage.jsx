@@ -1,21 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
 import {
   FileCheck2,
   MessageSquare,
   Activity,
   Apple,
-  Lightbulb,
-  Stethoscope,
-  CheckCircle2,
-  AlertTriangle,
-  XCircle,
+  Scale,
+  Ruler,
+  Brain,
   ExternalLink,
-  Printer,
-  Download,
-  Share2,
-  Heart,
   Baby,
   PhoneCall,
   BookOpen,
@@ -27,6 +20,7 @@ import {
 import EmptyState from "@/components/ui/EmptyState";
 import { useScreening } from "@/context/ScreeningContext";
 import { settingsService } from "@/services/settingsService";
+import { evaluateNutrition } from "@/data/nutritionStandards";
 import { AGE_GROUPS } from "@/data/communicationChecklist";
 import { APP_INFO } from "@/data/content";
 
@@ -39,6 +33,20 @@ export default function EvaluasiPage() {
   const motor = session.motorResult;
   const nutri = session.nutritionResult;
 
+  // Calculate or retrieve complete nutrition evaluation breakdown
+  const nutriEval = nutri
+    ? nutri.zBBU !== undefined
+      ? nutri
+      : evaluateNutrition({
+          ageMonths: profile?.usia_bulan || 0,
+          bbGram: nutri.bb_sekarang_gram || (nutri.bbKg ? Number(nutri.bbKg) * 1000 : 0),
+          tbCm: nutri.tb_cm || nutri.tbCm || 0,
+          lkCm: nutri.lk_cm || nutri.lkCm || 0,
+          riwayatPenyakit: nutri.riwayat_penyakit || {},
+          riwayatMakan: nutri.riwayat_makan || [],
+        })
+    : null;
+
   useEffect(() => {
     async function loadSettings() {
       try {
@@ -48,7 +56,7 @@ export default function EvaluasiPage() {
         // Fallback default
         setSettings({
           rs_name: "RSUD Kebayoran Lama",
-          rs_whatsapp: "6281234567890",
+          rs_whatsapp: "6281117032345",
           drive_flyer_stimulasi_0_6: "https://drive.google.com",
           drive_flyer_stimulasi_7_12: "https://drive.google.com",
           drive_flyer_stimulasi_13_18: "https://drive.google.com",
@@ -83,25 +91,6 @@ export default function EvaluasiPage() {
     );
   }
 
-  const handlePrint = () => {
-    window.print();
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: `Hasil Deteksi Tumbuh Kembang - ${profile.nama_lengkap}`,
-          text: `Rangkuman hasil skrining PACU TUMBUH RSUD Kebayoran Lama untuk ${profile.nama_lengkap}`,
-          url: window.location.href,
-        })
-        .catch(() => {});
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      toast.success("Tautan hasil evaluasi disalin ke clipboard!");
-    }
-  };
-
   // Age group & drive link determination
   const ageGroupKey = profile.kelompok_usia || "0-6";
   const driveStimulasiKey = `drive_flyer_stimulasi_${ageGroupKey.replace("-", "_")}`;
@@ -112,48 +101,28 @@ export default function EvaluasiPage() {
   // Overall status evaluation
   const hasCommIssue = comm && comm.score < 80;
   const hasMotorIssue = motor && motor.score < 80;
-  const hasNutriIssue = nutri && (nutri.statusColor === "red" || nutri.statusColor === "yellow");
+  const hasNutriIssue =
+    nutriEval && (nutriEval.statusColor === "red" || nutriEval.statusColor === "yellow");
 
   const isAllNormal = !hasCommIssue && !hasMotorIssue && !hasNutriIssue;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
-      {/* Header & Actions */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-5">
-        <div className="flex items-center gap-3.5">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
-            <FileCheck2 className="h-6 w-6" />
-          </div>
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
-              Rangkuman Terpadu
-            </span>
-            <h1 className="text-2xl font-extrabold text-slate-800">
-              Evaluasi Tumbuh Kembang & Gizi
-            </h1>
-            <p className="text-xs text-slate-500">
-              {APP_INFO.institution} — PACU TUMBUH
-            </p>
-          </div>
+      {/* Header */}
+      <div className="flex items-center gap-3.5 border-b border-slate-200 pb-5">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 shadow-sm">
+          <FileCheck2 className="h-6 w-6" />
         </div>
-
-        <div className="flex items-center gap-2 no-print">
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition"
-          >
-            <Printer className="h-4 w-4 text-slate-500" />
-            <span>Cetak PDF</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleShare}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition"
-          >
-            <Share2 className="h-4 w-4 text-slate-500" />
-            <span>Bagikan</span>
-          </button>
+        <div>
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+            Rangkuman Terpadu
+          </span>
+          <h1 className="text-2xl font-extrabold text-slate-800">
+            Evaluasi Tumbuh Kembang & Gizi
+          </h1>
+          <p className="text-xs text-slate-500">
+            {APP_INFO.institution} — PACU TUMBUH
+          </p>
         </div>
       </div>
 
@@ -220,8 +189,8 @@ export default function EvaluasiPage() {
         </p>
       </div>
 
-      {/* 3 PILAR HASIL SKRINING */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {/* 2 PILAR PERKEMBANGAN: KOMUNIKASI & MOTORIK */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* 1. Komunikasi */}
         <div className="flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <div className="space-y-3">
@@ -315,55 +284,144 @@ export default function EvaluasiPage() {
             )}
           </div>
         </div>
+      </div>
 
-        {/* 3. Status Gizi */}
-        <div className="flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
-                <Apple className="h-5 w-5" />
-              </div>
-              <span className="text-xs font-extrabold text-slate-400">03. STATUS GIZI</span>
+      {/* 3. STATUS GIZI & ANTROPOMETRI LENGKAP */}
+      <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
+              <Apple className="h-5 w-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                03. STATUS GIZI & ANTROPOMETRI
+              </span>
+              <h4 className="text-base font-extrabold text-slate-800">
+                Hasil Analisis Antropometri Standar WHO / Kemenkes
+              </h4>
+            </div>
+          </div>
+
+          {nutriEval && (
+            <span
+              className={`text-xs font-extrabold px-3 py-1 rounded-full ${
+                nutriEval.statusColor === "green"
+                  ? "bg-emerald-100 text-emerald-800"
+                  : nutriEval.statusColor === "yellow"
+                  ? "bg-amber-100 text-amber-800"
+                  : "bg-rose-100 text-rose-800"
+              }`}
+            >
+              {nutriEval.statusColor === "green"
+                ? "Gizi Baik"
+                : nutriEval.statusColor === "yellow"
+                ? "Perlu Pemantauan"
+                : "Perlu Intervensi"}
+            </span>
+          )}
+        </div>
+
+        {nutriEval ? (
+          <div className="space-y-5">
+            {/* Kesimpulan Status Gizi Banner */}
+            <div className="rounded-2xl bg-slate-50 p-5 border border-slate-100 space-y-1">
+              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                KESIMPULAN STATUS GIZI:
+              </span>
+              <h4 className="text-base sm:text-lg font-extrabold text-slate-900">
+                {nutriEval.statusKeseluruhan || nutriEval.status_keseluruhan}
+              </h4>
             </div>
 
-            {nutri ? (
-              <div className="space-y-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-lg font-black text-slate-900">
-                    BB: {nutri.bb_sekarang_gram ? nutri.bb_sekarang_gram / 1000 : nutri.bbKg} kg
+            {/* 4 Cards Antropometri */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* 1. BB/U */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-1.5 hover:border-slate-300 transition">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-600">
+                    Berat Badan / Usia (BB/U)
                   </span>
-                  <span className="text-[11px] font-semibold text-slate-400">
-                    TB: {nutri.tb_cm || nutri.tbCm} cm
-                  </span>
+                  <Scale className="h-4 w-4 text-emerald-600" />
                 </div>
-                <span
-                  className={`inline-block text-[11px] font-extrabold px-2.5 py-0.5 rounded-md ${
-                    nutri.statusColor === "green"
-                      ? "bg-emerald-100 text-emerald-800"
-                      : nutri.statusColor === "yellow"
-                      ? "bg-amber-100 text-amber-800"
-                      : "bg-rose-100 text-rose-800"
-                  }`}
-                >
-                  {nutri.status_bbtb || nutri.statusBBTB || nutri.status_keseluruhan}
-                </span>
-                <p className="text-xs text-slate-600 leading-relaxed pt-1 line-clamp-3">
-                  {nutri.rekomendasi_gizi || nutri.rekomendasiGizi}
+                <p className="text-sm font-extrabold text-slate-900">
+                  {nutriEval.statusBBU || nutriEval.status_bbu}
+                </p>
+                <p className="text-xs text-slate-500">
+                  BB: {nutriEval.bbKg || (nutri.bb_sekarang_gram ? (Number(nutri.bb_sekarang_gram) / 1000).toFixed(2) : "-")} kg (Z-Score: {nutriEval.zBBU || "0.00"})
                 </p>
               </div>
-            ) : (
-              <div className="py-6 text-center space-y-2">
-                <p className="text-xs text-slate-400">Belum diskrining</p>
-                <Link
-                  to="/skrining-gizi"
-                  className="inline-block text-xs font-bold text-amber-600 hover:underline"
-                >
-                  Mulai Skrining →
-                </Link>
+
+              {/* 2. TB/U */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-1.5 hover:border-slate-300 transition">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-600">
+                    Tinggi Badan / Usia (TB/U)
+                  </span>
+                  <Ruler className="h-4 w-4 text-emerald-600" />
+                </div>
+                <p className="text-sm font-extrabold text-slate-900">
+                  {nutriEval.statusTBU || nutriEval.status_tbu}
+                </p>
+                <p className="text-xs text-slate-500">
+                  TB/PB: {nutriEval.tbCm || nutri.tb_cm || "-"} cm (Z-Score: {nutriEval.zTBU || "0.00"})
+                </p>
               </div>
-            )}
+
+              {/* 3. BB/TB */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-1.5 hover:border-slate-300 transition">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-600">
+                    Berat / Tinggi (BB/TB)
+                  </span>
+                  <Apple className="h-4 w-4 text-emerald-600" />
+                </div>
+                <p className="text-sm font-extrabold text-slate-900">
+                  {nutriEval.statusBBTB || nutriEval.status_bbtb}
+                </p>
+                <p className="text-xs text-slate-500">
+                  Indeks Proporsi Tubuh (Z-Score: {nutriEval.zBBTB || "0.00"})
+                </p>
+              </div>
+
+              {/* 4. LK/U */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-1.5 hover:border-slate-300 transition">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-600">
+                    Lingkar Kepala / Usia (LK/U)
+                  </span>
+                  <Brain className="h-4 w-4 text-emerald-600" />
+                </div>
+                <p className="text-sm font-extrabold text-slate-900">
+                  {nutriEval.statusLKU || nutriEval.status_lku}
+                </p>
+                <p className="text-xs text-slate-500">
+                  LK: {nutriEval.lkCm || nutri.lk_cm || "-"} cm (Z-Score: {nutriEval.zLK || "0.00"})
+                </p>
+              </div>
+            </div>
+
+            {/* Rekomendasi Pemenuhan Gizi & Asupan */}
+            <div className="rounded-2xl bg-slate-50 p-5 border border-slate-100 space-y-1.5">
+              <h5 className="font-bold text-xs text-amber-800">
+                Rekomendasi Pemenuhan Gizi & Asupan:
+              </h5>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                {nutriEval.rekomendasiGizi || nutriEval.rekomendasi_gizi}
+              </p>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="py-8 text-center space-y-2">
+            <p className="text-xs text-slate-400">Data skrining status gizi belum diisi</p>
+            <Link
+              to="/skrining-gizi"
+              className="inline-block text-xs font-bold text-amber-600 hover:underline"
+            >
+              Mulai Skrining Status Gizi →
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* SECTION GOOGLE DRIVE FLYER & MATERI EDUKASI */}
